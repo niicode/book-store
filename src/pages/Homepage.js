@@ -7,8 +7,8 @@ function HomePage() {
   return (
     <>
       <Book title="Introduction to HTML" author="James Garry" category="Fiction" className="margin-top-100" />
-      <Book title="C# fundamentals" author="James Garry" category="Romance" />
-      <Book title="How to stay motivated" author="James Garry" category="Fiction" />
+      <Book title="The Romantic Man" author="James Garry" category="Romance" />
+      <Book title="The gods are not to blame" author="James Garry" category="Fiction" />
       <hr className="container" />
       <div className="container">
         <h3>ADD NEW BOOK</h3>

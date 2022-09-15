@@ -7,8 +7,7 @@
 
 # testing
 /coverage
-/src/components
-/src/pages
+
 # production
 /build
 
