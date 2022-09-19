@@ -5,10 +5,14 @@ import './book.css';
 
 function Book(props) {
   const {
-    title, author, category, className,
+    bookId, title, author, category, className, progress,
   } = props;
+
   return (
-    <div className={`flex flex-justify-space-between flex-align-start container book-container ${className}`}>
+    <div
+      id={bookId}
+      className={`flex flex-justify-space-between flex-align-start container book-container ${className}`}
+    >
       <div className="flex flex-column flex-justify-space-between">
         <div className="flex flex-column">
           <h4>{category}</h4>
@@ -21,7 +25,7 @@ function Book(props) {
         <div className="actions flex">
           <ul className="flex">
             <li className="color-primary">Comments | </li>
-            <li className="color-primary"> Remove |</li>
+            <li className="color-primary"> Remove | </li>
             <li className="color-primary"> Edit</li>
           </ul>
         </div>
@@ -30,7 +34,9 @@ function Book(props) {
         <div className="progress flex flex-column flex-justify-center ">
           <div className="progress-bar" />
           <div className="flex flex-column flex-justify-center">
-            <span className="prog-number">50%</span>
+            <span className="prog-number">
+              {progress ? `${progress}%` : '0%'}
+            </span>
             <span>Completed</span>
           </div>
         </div>
@@ -39,7 +45,9 @@ function Book(props) {
             <p>CURRENT CHAPTER</p>
             <p>Chapter 1</p>
           </div>
-          <button type="button" className="btn btn-primary">UPDATE PROGRESS</button>
+          <button type="button" className="btn btn-primary">
+            UPDATE PROGRESS
+          </button>
         </div>
       </div>
     </div>
@@ -51,6 +59,8 @@ Book.propTypes = {
   author: PropTypes.string.isRequired,
   category: PropTypes.string.isRequired,
   className: PropTypes.string,
+  bookId: PropTypes.string.isRequired,
+  progress: PropTypes.string.isRequired,
 };
 
 Book.defaultProps = {

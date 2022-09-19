@@ -1,14 +1,25 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import Book from '../components/Book';
 import Form from '../components/Form';
 import '../index.css';
 
 function HomePage() {
+  const books = useSelector((state) => state.books);
   return (
     <>
-      <Book title="Introduction to HTML" author="James Garry" category="Fiction" className="margin-top-100" />
-      <Book title="The Romantic Man" author="James Garry" category="Romance" />
-      <Book title="The gods are not to blame" author="James Garry" category="Fiction" />
+      {books.length > 0
+        ? books.map((book) => (
+          <Book
+            key={book.id}
+            title={book.title}
+            author={book.author}
+            category={book.category}
+            book_id={book.id}
+            progress={book.progress}
+          />
+        ))
+        : null}
       <hr className="container" />
       <div className="container">
         <h3>ADD NEW BOOK</h3>
