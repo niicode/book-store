@@ -1,12 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
+import { removeBook } from '../redux/books/book';
 import '../index.css';
 import './book.css';
 
 function Book(props) {
   const {
-    bookId, title, author, category, className, progress,
+    bookId, title, author, category, className,
   } = props;
+
+  const dispatch = useDispatch();
+
+  const handleClick = () => {
+    dispatch(removeBook(bookId));
+  };
 
   return (
     <div
@@ -24,9 +32,18 @@ function Book(props) {
         <br />
         <div className="actions flex">
           <ul className="flex">
-            <li className="color-primary">Comments | </li>
-            <li className="color-primary"> Remove | </li>
-            <li className="color-primary"> Edit</li>
+            <li className="color-primary">
+              <button type="button">Comments |</button>
+            </li>
+            <li className="color-primary">
+              <button type="button" onClick={() => handleClick()}>
+                {' '}
+                Remove |
+              </button>
+            </li>
+            <li className="color-primary">
+              <button type="button"> Edit</button>
+            </li>
           </ul>
         </div>
       </div>
@@ -34,9 +51,7 @@ function Book(props) {
         <div className="progress flex flex-column flex-justify-center ">
           <div className="progress-bar" />
           <div className="flex flex-column flex-justify-center">
-            <span className="prog-number">
-              {progress ? `${progress}%` : '0%'}
-            </span>
+            <span className="prog-number">50%</span>
             <span>Completed</span>
           </div>
         </div>
@@ -60,7 +75,6 @@ Book.propTypes = {
   category: PropTypes.string.isRequired,
   className: PropTypes.string,
   bookId: PropTypes.string.isRequired,
-  progress: PropTypes.string.isRequired,
 };
 
 Book.defaultProps = {

@@ -15,11 +15,14 @@ function HomePage() {
             title={book.title}
             author={book.author}
             category={book.category}
-            book_id={book.id}
-            progress={book.progress}
+            bookId={book.id}
           />
         ))
-        : null}
+        : (
+          <div className="container">
+            <h3>No books yet</h3>
+          </div>
+        )}
       <hr className="container" />
       <div className="container">
         <h3>ADD NEW BOOK</h3>

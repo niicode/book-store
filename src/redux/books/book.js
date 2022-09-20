@@ -3,7 +3,29 @@ const REMOVE_BOOK = 'bookStore/books/REMOVE_BOOK';
 const EDIT_BOOK = 'bookStore/books/EDIT_BOOK';
 
 export const initialState = {
-  books: [],
+  books: [
+    {
+      id: '1',
+      title: 'Harry Potter and the Chamber of Secrets',
+      author: 'J.K. Rowling',
+      category: 'Fantasy',
+      progress: 50,
+    },
+    {
+      id: '2',
+      title: 'The Lord of the Rings',
+      author: 'J.R.R. Tolkien',
+      category: 'Fantasy',
+      progress: 100,
+    },
+    {
+      id: '3',
+      title: 'The Hobbit',
+      author: 'J.R.R. Tolkien',
+      category: 'Fantasy',
+      progress: 0,
+    },
+  ],
 };
 
 export default function booksReducer(state = initialState.books, action = {}) {
@@ -31,10 +53,10 @@ export function addBook(book) {
   };
 }
 
-export function removeBook(book) {
+export function removeBook(id) {
   return {
     type: REMOVE_BOOK,
-    book,
+    id,
   };
 }
 
