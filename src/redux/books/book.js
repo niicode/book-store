@@ -1,69 +1,60 @@
-const ADD_BOOK = 'bookStore/books/ADD_BOOK';
-const REMOVE_BOOK = 'bookStore/books/REMOVE_BOOK';
-const EDIT_BOOK = 'bookStore/books/EDIT_BOOK';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-export const initialState = {
-  books: [
-    {
-      id: '1',
-      title: 'Harry Potter and the Chamber of Secrets',
-      author: 'J.K. Rowling',
-      category: 'Fantasy',
-      progress: 50,
+const baseUrl = 'https://us-central1-bookstore-api-e63c8.cloudfunctions.net/bookstoreApi/apps/jWtm8opEuG2X57yQJBGe/';
+
+export const fetchBooks = createAsyncThunk('books/fetchBooks', async () => {
+  const response = await fetch(`${baseUrl}books`);
+  const data = await response.json();
+  return data;
+});
+
+export const addBook = createAsyncThunk('books/addBook', async (book) => {
+  const response = await fetch(`${baseUrl}books`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
     },
-    {
-      id: '2',
-      title: 'The Lord of the Rings',
-      author: 'J.R.R. Tolkien',
-      category: 'Fantasy',
-      progress: 100,
+    body: JSON.stringify(book),
+  });
+
+  const newBook = await response.text();
+  return newBook;
+});
+
+export const removeBook = createAsyncThunk('books/removeBook', async (id) => {
+  const response = await fetch(`${baseUrl}books/${id}`, {
+    method: 'DELETE',
+  });
+  const deletedBook = await response.text();
+  return deletedBook;
+});
+
+const booksSlice = createSlice({
+  name: 'books',
+  initialState: {
+    books: [],
+  },
+  reducers: {
+    addBookReducer: (state, action) => {
+      const newItems = { ...action.payload };
+      state.books.push(newItems);
     },
-    {
-      id: '3',
-      title: 'The Hobbit',
-      author: 'J.R.R. Tolkien',
-      category: 'Fantasy',
-      progress: 0,
+    removeBookReducer: (state, action) => {
+      state.books = state.books.filter(
+        (book) => book.item_id !== action.payload,
+      );
     },
-  ],
-};
+  },
+  extraReducers: {
+    [fetchBooks.fulfilled]: (state, action) => {
+      const books = Object.keys(action.payload).map((key) => ({
+        ...action.payload[key][0],
+        item_id: key,
+      }));
+      state.books = books;
+    },
+  },
+});
 
-export default function booksReducer(state = initialState.books, action = {}) {
-  switch (action.type) {
-    case ADD_BOOK:
-      return [...state, action.book];
-    case REMOVE_BOOK:
-      return state.filter((book) => book.id !== action.id);
-    case EDIT_BOOK:
-      return state.map((book) => {
-        if (book.id === action.book.id) {
-          return action.book;
-        }
-        return book;
-      });
-    default:
-      return state;
-  }
-}
-
-export function addBook(book) {
-  return {
-    type: ADD_BOOK,
-    book,
-  };
-}
-
-export function removeBook(id) {
-  return {
-    type: REMOVE_BOOK,
-    id,
-  };
-}
-
-export function editBook(id, book) {
-  return {
-    type: EDIT_BOOK,
-    id,
-    book,
-  };
-}
+export const { addBookReducer, removeBookReducer } = booksSlice.actions;
+export default booksSlice.reducer;

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
-import { removeBook } from '../redux/books/book';
+import { removeBook, removeBookReducer } from '../redux/books/book';
 import '../index.css';
 import './book.css';
 
@@ -13,7 +13,9 @@ function Book(props) {
   const dispatch = useDispatch();
 
   const handleClick = () => {
-    dispatch(removeBook(bookId));
+    dispatch(removeBook(bookId)).then(() => {
+      dispatch(removeBookReducer(bookId));
+    });
   };
 
   return (
