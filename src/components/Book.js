@@ -1,14 +1,28 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
+import { removeBook, removeBookReducer } from '../redux/books/book';
 import '../index.css';
 import './book.css';
 
 function Book(props) {
   const {
-    title, author, category, className,
+    bookId, title, author, category, className,
   } = props;
+
+  const dispatch = useDispatch();
+
+  const handleClick = () => {
+    dispatch(removeBook(bookId)).then(() => {
+      dispatch(removeBookReducer(bookId));
+    });
+  };
+
   return (
-    <div className={`flex flex-justify-space-between flex-align-start container book-container ${className}`}>
+    <div
+      id={bookId}
+      className={`flex flex-justify-space-between flex-align-start container book-container ${className}`}
+    >
       <div className="flex flex-column flex-justify-space-between">
         <div className="flex flex-column">
           <h4>{category}</h4>
@@ -20,9 +34,18 @@ function Book(props) {
         <br />
         <div className="actions flex">
           <ul className="flex">
-            <li className="color-primary">Comments | </li>
-            <li className="color-primary"> Remove |</li>
-            <li className="color-primary"> Edit</li>
+            <li className="color-primary">
+              <button type="button">Comments |</button>
+            </li>
+            <li className="color-primary">
+              <button type="button" onClick={() => handleClick()}>
+                {' '}
+                Remove |
+              </button>
+            </li>
+            <li className="color-primary">
+              <button type="button"> Edit</button>
+            </li>
           </ul>
         </div>
       </div>
@@ -39,7 +62,9 @@ function Book(props) {
             <p>CURRENT CHAPTER</p>
             <p>Chapter 1</p>
           </div>
-          <button type="button" className="btn btn-primary">UPDATE PROGRESS</button>
+          <button type="button" className="btn btn-primary">
+            UPDATE PROGRESS
+          </button>
         </div>
       </div>
     </div>
@@ -51,6 +76,7 @@ Book.propTypes = {
   author: PropTypes.string.isRequired,
   category: PropTypes.string.isRequired,
   className: PropTypes.string,
+  bookId: PropTypes.string.isRequired,
 };
 
 Book.defaultProps = {

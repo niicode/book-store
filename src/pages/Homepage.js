@@ -1,14 +1,29 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchBooks } from '../redux/books/book';
 import Book from '../components/Book';
 import Form from '../components/Form';
 import '../index.css';
 
 function HomePage() {
+  const books = useSelector((state) => state.books.books);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchBooks());
+  }, [dispatch]);
+
   return (
     <>
-      <Book title="Introduction to HTML" author="James Garry" category="Fiction" className="margin-top-100" />
-      <Book title="The Romantic Man" author="James Garry" category="Romance" />
-      <Book title="The gods are not to blame" author="James Garry" category="Fiction" />
+      {books.map((book) => (
+        <Book
+          key={book.item_id}
+          title={book.title}
+          author={book.author}
+          category={book.category}
+          bookId={book.item_id}
+        />
+      ))}
       <hr className="container" />
       <div className="container">
         <h3>ADD NEW BOOK</h3>
